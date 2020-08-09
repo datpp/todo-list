@@ -24,6 +24,7 @@ import {
   startEpic,
 } from "../redux/epics/TaskEpic";
 import { getTodoTasks } from "../redux/selectors/TodoSelector";
+import { Task } from "../models/TaskModal";
 
 // @todo: have a bug with persit store so temporary register reducer inside component register
 // reducerRegistry.register('todo', todoReducer);
@@ -31,7 +32,7 @@ import { getTodoTasks } from "../redux/selectors/TodoSelector";
 
 epicRegistry.register(createEpic, startEpic, deleteEpic, doneEpic, cancelEpic);
 
-export default function Task() {
+const TodoPage = () => {
   const dispatch = useDispatch();
   const taskList = useSelector(getTodoTasks);
 
@@ -80,4 +81,6 @@ export default function Task() {
       </main>
     </div>
   );
-}
+};
+
+export default TodoPage;
