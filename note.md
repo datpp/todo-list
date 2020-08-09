@@ -133,3 +133,4 @@ P/s: you can see the commit change to see how I modified code for solution 2.
 2. I also temporary not focus on setup API structure to support API can easy extendable. (Basically I'm not refer build API base on Next.js should use some other framework to build API like loopback4 the config APIEndpoint)
 3. Add authentication to protect API
 4. fix a bug with reducerRegistry where store make persist data sometime bug.
+5. add more test case for other component (right now only add a test case for TaskListItem)
