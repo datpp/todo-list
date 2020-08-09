@@ -1,5 +1,6 @@
 import Icon from "@material-ui/core/Icon";
 import Button from "@material-ui/core/Button";
+import styles from "../styles/todo.module.css";
 
 const icons = {
   todo: "assignment",
@@ -17,42 +18,65 @@ const colors = {
   canceled: "black",
 };
 
-const TaskListItem = ({ children, status }) => {
+const TaskListItem = ({ task, onAction }) => {
+  const makeAction = (e, action) => {
+    if (onAction && task) {
+      onAction(action, task);
+    }
+  };
+
   return (
     <>
-      <li className="task-list__item">
-        <Icon style={{ color: colors[status], margin: "auto 4px auto 0px" }}>
-          {icons[status]}
+      <li className={styles["task-list__item"]}>
+        <Icon
+          style={{ color: colors[task.status], margin: "auto 4px auto 0px" }}
+        >
+          {icons[task.status]}
         </Icon>
-        <p className="title">{children}</p>
-        <div className="btn-group">
-          <Button type="button" color="primary">
-            Start
-          </Button>
-          <Button type="button" color="secondary">
-            Done
-          </Button>
-          <Button type="button">Cancel</Button>
-          <Button type="button">Delete</Button>
+        <p className={styles.title}>{task.title}</p>
+        <div className={styles["btn-group"]}>
+          {task.status === "todo" && (
+            <>
+              <Button
+                type="button"
+                color="primary"
+                onClick={(e) => makeAction(e, "start")}
+              >
+                Start
+              </Button>
+              <Button type="button" onClick={(e) => makeAction(e, "delete")}>
+                Delete
+              </Button>
+            </>
+          )}
+          {task.status === "in-progress" && (
+            <>
+              <Button
+                type="button"
+                color="secondary"
+                onClick={(e) => makeAction(e, "done")}
+              >
+                Done
+              </Button>
+              <Button type="button" onClick={(e) => makeAction(e, "cancel")}>
+                Cancel
+              </Button>
+            </>
+          )}
+
+          {(task.status === "canceled" || task.status === "done") && (
+            <>
+              <Button type="button" onClick={(e) => makeAction(e, "delete")}>
+                Delete
+              </Button>
+            </>
+          )}
         </div>
       </li>
-      <style jsx>{`
-        .task-list__item {
-          padding: 4px 8px;
-          margin: 2px 0px;
-          display: flex;
-          background: #fff;
-        }
-        .title {
-          flex: 1;
-          margin: auto 0;
-        }
-        .btn-group {
-          display: flex;
-        }
-      `}</style>
     </>
   );
 };
+
+TaskListItem.displayName = "TaskListItem";
 
 export default TaskListItem;

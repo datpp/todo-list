@@ -1,3 +1,3 @@
-import Task from "@app/task/pages";
+import Task from "../apps/todo/pages";
 
 export default Task;

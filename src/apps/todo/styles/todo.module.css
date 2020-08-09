@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  margin: 16px 0px;
+}
+
+.task-input {
+  appearance: none;
+  padding: 8px 4px;
+  display: block;
+  flex: 1;
+  border: 1px solid #dedede;
+  border-radius: 2px;
+}
+
+.task-list {
+  border: 0;
+  padding: 5px;
+  margin: 0;
+  border-radius: 2px;
+  background: #f0f0f0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.task-list__item {
+  padding: 4px 8px;
+  margin: 2px 0px;
+  display: flex;
+  background: #fff;
+}
+
+.title {
+  flex: 1;
+  margin: auto 0;
+}
+
+.btn-group {
+  display: flex;
+}
