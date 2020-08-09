@@ -26,7 +26,7 @@ const taskReducer = (state = initialState, action: TaskAction) => {
       };
     case TaskActionTypes.TASK_LOAD_SUCCESS:
       return {
-        ...taskAdapter.addMany(state, action.tasks),
+        ...taskAdapter.addMany(taskAdapter.removeAll(state), action.tasks),
         loading: false,
       };
     case TaskActionTypes.TASK_LOAD_FAILURE:

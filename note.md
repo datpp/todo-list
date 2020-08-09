@@ -63,7 +63,7 @@ __[root]
 - I added eslint to make sure all developer follow rule for coding.
 - We can't fix all coding syntax at a time, so I added lint-staged to project to make sure we check syntax for feature commit only (only check syntax with modified file). 
 - I added ability to develop module in both of javascript and typescript language (I prefer typescript rather than javascript es6).
-- I added axios and create httpClient and prefer all http request should run with httpClient, it will help us control the logic in/out request global by can control interceptors of axios.
+- I added axios and create httpClient and prefer all http request should run with httpClient, it will help us control the logic in/out request global by can control interceptors of axios. (see more at https://levelup.gitconnected.com/enhance-your-http-request-with-axios-and-typescript-f52a6c6c2c8e)
 - I added @redux/toolkit to use some hook helper like createEntityAdapter.
 - I added redux to this project to make centralize state throughout the app, I put all general setup for redux in /src/redux, and each module (app) will have /redux folder, where I use to define and provide the Action, Reducer, Epic & Selector for App, so module can communication with each other. See more at bellow for module (app) structure:
 
@@ -111,16 +111,25 @@ __[root]
 ```
 Note: each action have 3 states correspond by 3 other Actions - for ex: Start Action will have Start, StartSuccess & StartFailure Action.
 ```
-- hj
-  
 
-https://levelup.gitconnected.com/enhance-your-http-request-with-axios-and-typescript-f52a6c6c2c8e
+#### [Requirement #2](/todo-list#2) - Solution Explanation 
+- Because we using next.js so I use default API structure of Next.js to develop backend.
+- for simple solution at this moment I use sequelize for ORM, and database I choose sqlite. I prefer use ORM because we can change database in future.
+- this is simple solution so there're have a few limitation (not sync between client in realtime - need refresh, each time page refresh it will call load again list task from API)
+- if we have large project manage complex sync data between online/offline in realtime I prefer use Cloud FireStore for the app.
+- Ok, all above I just explain the way I will use. Now we update component in last commit to adapt with this requirement.
+1. in todo app, I create TaskService.ts it will manage all the api call between front-end to backend of Task.
+2. I modify taskEpic, instead throw new action base on input action, I will call service to retrieve/update data to backend.
+ 
+P/s: you can see the commit change to see how I modified code for solution 2.
 
 
 # Note
 (1) I make assumption old feature run in /task, for root (/) location it will run feature refactored in new structure.
  
-## General Information
-    I consider using bootstrap/tailwindcss
----
-### @next/bundle-analyzer
+## @Todo
+- Because I have limited time, so I have not take care a few things:
+1. Temporary I have not care about SSR.
+2. I also temporary not focus on setup API structure to support API can easy extendable. (Basically I'm not refer build API base on Next.js should use some other framework to build API like loopback4 the config APIEndpoint)
+3. Add authentication to protect API
+4. fix a bug with reducerRegistry where store make persist data sometime bug.

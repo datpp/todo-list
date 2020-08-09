@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskList from "../components/TaskList";
 import TaskListItem from "../components/TaskListItem";
 import TaskInput from "../components/TaskInput";
@@ -12,6 +12,7 @@ import {
   TaskCreate,
   TaskDelete,
   TaskDone,
+  TaskLoad,
   TaskStart,
 } from "../redux/actions/TaskAction";
 import { toPlainObject } from "../../core/helpers/CoreHelper";
@@ -21,6 +22,7 @@ import {
   createEpic,
   deleteEpic,
   doneEpic,
+  loadEpic,
   startEpic,
 } from "../redux/epics/TaskEpic";
 import { getTodoTasks } from "../redux/selectors/TodoSelector";
@@ -30,11 +32,23 @@ import { Task } from "../models/TaskModal";
 // reducerRegistry.register('todo', todoReducer);
 // reducerRegistry.register('task', taskReducer);
 
-epicRegistry.register(createEpic, startEpic, deleteEpic, doneEpic, cancelEpic);
+epicRegistry.register(
+  createEpic,
+  startEpic,
+  deleteEpic,
+  doneEpic,
+  cancelEpic,
+  loadEpic
+);
 
 const TodoPage = () => {
   const dispatch = useDispatch();
   const taskList = useSelector(getTodoTasks);
+  const isLoading = useSelector((state) => state.task.loading || false);
+
+  useEffect(() => {
+    dispatch(toPlainObject(new TaskLoad()));
+  }, []);
 
   const onAdd = (task) => {
     dispatch(toPlainObject(new TaskCreate(task)));
@@ -71,13 +85,33 @@ const TodoPage = () => {
       </Head>
       <main style={{ maxWidth: "966px", margin: "auto" }}>
         <TaskInput onAdd={onAdd} />
-        <TaskList>
-          {taskList.map((task) => {
-            return (
-              <TaskListItem key={task.id} task={task} onAction={onAction} />
-            );
-          })}
-        </TaskList>
+        {isLoading ? (
+          <>
+            <p>Loading</p>
+          </>
+        ) : (
+          <>
+            <TaskList>
+              {taskList.length > 0 ? (
+                taskList.map((task) => {
+                  return (
+                    <TaskListItem
+                      key={task.id}
+                      task={task}
+                      onAction={onAction}
+                    />
+                  );
+                })
+              ) : (
+                <>
+                  <p>
+                    <center>Empty Task List!</center>
+                  </p>
+                </>
+              )}
+            </TaskList>
+          </>
+        )}
       </main>
     </div>
   );

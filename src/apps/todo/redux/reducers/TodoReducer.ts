@@ -22,6 +22,11 @@ const todoReducer = (state = initialState, action: TodoAction | TaskAction) => {
         loading: true,
       };
     case TaskActionTypes.TASK_LOAD_SUCCESS:
+      return {
+        ...state,
+        taskIds: action.tasks.map((task) => task.id),
+        loading: false,
+      };
     case TaskActionTypes.TASK_LOAD_FAILURE:
       return {
         ...state,

@@ -30,7 +30,7 @@ export enum ActionTypes {
 export class TaskLoad implements Action {
   readonly type = ActionTypes.TASK_LOAD;
 
-  constructor(public ids: number[]) {
+  constructor(public ids?: number[]) {
     /* do nothing */
   }
 }
